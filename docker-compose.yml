@@ -18,6 +18,7 @@ services:
       - "80:80"      # The HTTP port
       - "8080:8080"  # The Web UI (enabled by --api)
       - "443:443"
+      - "4000:4000"  # nodejs server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock  # So that Traefik can listen to the Docker events
       - ./traefik.toml:/etc/traefik/traefik.toml
@@ -55,8 +56,6 @@ services:
       - "traefik.backend=portainer"
       - "traefik.frontend.rule=Host:portainer.localhost"
       - "traefik.docker.network=local-shared-net"
-    ports:
-      - "9000:9000"
     networks:
       - local-shared-net
     volumes:
