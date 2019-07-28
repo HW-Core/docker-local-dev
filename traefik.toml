@@ -1,39 +1,16 @@
+[log]
+  level = "DEBUG"
 
-debug=true
-loglevel = "INFO"
-defaultEntryPoints = ["http", "https", "ws", "wss"]
-InsecureSkipVerify = true
-
-[api]
-domain = "traefik.local"
-address = ":8080"
-
-[docker]
-watch = true
-exposedbydefault = false
+[providers.docker]
+  endpoint = "unix:///var/run/docker.sock"
+  exposedByDefault = false
 
 # Force HTTPS
 [entryPoints]
   # http should be redirected to https
   [entryPoints.http]
   address = ":80"
-    #[entryPoints.http.redirect]
-    #entryPoint = "https"
-  # https is the default
   [entryPoints.https]
   address = ":443"
-    [entryPoints.https.tls]
 
-[[tls]]
-  entryPoints = ["https"]
-  [tls.certificate]
-    certFile = "/etc/traefik/traefik.crt"
-    keyFile = "/etc/traefik/traefik.key"
 
-# Let's encrypt configuration
-#[acme]
-#  email = "user@example.com"
-#  storage = "/etc/traefik/acme.json"
-#  entryPoint = "https"
-#  acmeLogging = true
-#  OnHostRule = true

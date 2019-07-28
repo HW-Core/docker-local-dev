@@ -8,7 +8,7 @@ networks:
 services:
   traefik:
     container_name: traefik
-    image: traefik:1.7
+    image: traefik:v2.0.0-alpha8
     command:
       - "--docker"
       - "--docker.endpoint=unix:///var/run/docker.sock"
@@ -22,8 +22,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock  # So that Traefik can listen to the Docker events
       - ./traefik.toml:/etc/traefik/traefik.toml
-      - ./traefik.crt:/etc/traefik/traefik.crt
-      - ./traefik.key:/etc/traefik/traefik.key
+      - ./cert.crt:/etc/traefik/traefik.crt
+      - ./cert.key:/etc/traefik/traefik.key
     networks:
       - local-shared-net
     labels:
@@ -36,12 +36,9 @@ services:
     container_name: whoami
     restart: always
     labels:
-      - "traefik.enable=true"
-      - "traefik.basic.port=80"
-      - "traefik.basic.protocol=http"
-      - "traefik.backend=whaomi"
-      - "traefik.frontend.rule=Host:whoami.localhost"
-      - "traefik.docker.network=local-shared-net"
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Host(`whoami.localhost`)
+      - traefik.docker.network=local-shared-net
     networks:
       - local-shared-net
   portainer:
@@ -50,12 +47,9 @@ services:
     container_name: portainer
     restart: always
     labels:
-      - "traefik.enable=true"
-      - "traefik.basic.port=9000"
-      - "traefik.basic.protocol=http"
-      - "traefik.backend=portainer"
-      - "traefik.frontend.rule=Host:portainer.localhost"
-      - "traefik.docker.network=local-shared-net"
+      - traefik.enable=true
+      - traefik.port=9000
+      - traefik.http.routers.portainer.rule=Host(`portainer.localhost`)
     networks:
       - local-shared-net
     volumes:
