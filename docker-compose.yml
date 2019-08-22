@@ -13,7 +13,6 @@ services:
       - "--docker"
       - "--docker.endpoint=unix:///var/run/docker.sock"
       - "--api"
-      - "--logLevel=DEBUG"
     ports:
       - "80:80"      # The HTTP port
       - "8080:8080"  # The Web UI (enabled by --api)
