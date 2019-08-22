@@ -8,7 +8,7 @@ networks:
 services:
   traefik:
     container_name: traefik
-    image: traefik:v2.0.0-alpha8
+    image: traefik:v2.0.0-beta1
     command:
       - "--docker"
       - "--docker.endpoint=unix:///var/run/docker.sock"
